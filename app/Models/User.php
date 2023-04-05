@@ -43,4 +43,10 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+      // Define the relationship with TimeLog model
+    public function timeLogs()
+    {
+        return $this->hasMany(TimeLog::class);
+    }
 }
