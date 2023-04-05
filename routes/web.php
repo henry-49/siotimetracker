@@ -2,6 +2,9 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\TimeLogController;
+use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\TaskController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -39,5 +42,53 @@ Route::controller(AdminController::class)->group(function () {
     Route::get('/change/password', 'ChangePassword')->name('change.password');
     Route::post('/update/password', 'UpdatePassword')->name('update.password');
 });
+
+
+Route::middleware('auth')->group(function () {
+
+	// Route to display a list of all time logs for the authenticated user
+    Route::get('/timelogs', [TimeLogController::class, 'index'])->name('timelog.index');
+
+    // Route to display the time log creation form
+    Route::get('/timelogs/create', [TimeLogController::class, 'create'])->name('timelog.create');
+
+    // Route to handle form submission and create a new time log
+    Route::post('/timelogs', [TimeLogController::class, 'store'])->name('timelog.store');
+
+    // Route to display the edit form for a specific time log
+    Route::get('/timelogs/{timelog}/edit', [TimeLogController::class, 'edit'])->name('timelog.edit');
+
+    // Route to handle form submission and update a specific time log
+    Route::put('/timelogs/{timelog}', [TimeLogController::class, 'update'])->name('timelog.update');
+
+    // Route to handle deleting a specific time log
+    Route::delete('/timelogs/{timelog}', [TimeLogController::class, 'delete'])->name('timelog.destroy');
+
+
+    // Project All Routes
+Route::controller(ProjectController::class)->group(function () {
+Route::get('/projects', 'index')->name('projects.index');
+Route::get('/project/create',  'create')->name('project.create');
+Route::get('/projects/{id}',  'show')->name('project.show');
+Route::post('/project/store', 'store')->name('project.store');
+Route::get('/project/edit/{id}', 'edit')->name('project.edit');
+Route::put('/project/update/{id}', 'update')->name('project.update');
+Route::delete('/project/delete/{id}', 'destroy')->name('project.delete');
+});
+
+
+// Task All Routes
+Route::controller(TaskController::class)->group(function () {
+Route::get('/tasks',  'index')->name('task.index');
+Route::get('/tasks/create',  'create')->name('task.create');
+Route::post('/tasks',  'store')->name('task.store');
+Route::get('/tasks/{id}',  'show')->name('task.show');
+Route::get('/tasks/{id}/edit',  'edit')->name('task.edit');
+Route::put('/tasks/{id}',  'update')->name('task.update');
+Route::delete('/tasks/{id}',  'destroy')->name('task.destroy');
+});
+
+});
+
 
 require __DIR__.'/auth.php';

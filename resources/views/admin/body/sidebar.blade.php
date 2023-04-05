@@ -25,7 +25,8 @@
                                     <span>Timer Logs</span>
                                 </a>
                                 <ul class="sub-menu" aria-expanded="false">
-                                    <li><a href="#">Time Log</a></li>
+                                    <li><a href="{{ route('timelog.create') }}">Add Time Log</a></li>
+                                    <li><a href="{{ route('timelog.index') }}"> View Time Log</a></li>
                                 </ul>
                             </li>
 
@@ -36,7 +37,18 @@
                                     <span>Projects</span>
                                 </a>
                                 <ul class="sub-menu" aria-expanded="false">
-                                    <li><a href="#">Add Project</a></li>
+                                    <li><a href="{{ route('project.create') }}">Add Project</a></li>
+                                    <li><a href="{{route('projects.index') }}">View Project</a></li>
+                                </ul>
+                            </li>
+
+                             <li>
+                                <a href="javascript: void(0);" class="has-arrow waves-effect">
+                                    <i class="ri-task-line"></i>
+                                    <span>Task</span>
+                                </a>
+                                <ul class="sub-menu" aria-expanded="false">
+                                    <li><a href="#">Add Task</a></li>
                                     <li><a href="#">View Project</a></li>
                                 </ul>
                             </li>
