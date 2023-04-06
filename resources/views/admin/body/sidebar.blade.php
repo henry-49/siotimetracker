@@ -48,8 +48,8 @@
                                     <span>Task</span>
                                 </a>
                                 <ul class="sub-menu" aria-expanded="false">
-                                    <li><a href="#">Add Task</a></li>
-                                    <li><a href="#">View Project</a></li>
+                                    <li><a href="{{ route('task.create') }}">Add Task</a></li>
+                                    <li><a href="#">View Task</a></li>
                                 </ul>
                             </li>
 

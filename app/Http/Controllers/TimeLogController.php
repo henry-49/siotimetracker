@@ -15,20 +15,11 @@ class TimeLogController extends Controller
      */
     public function index(Request $request)
     {
-        //
-        //  $user = $request->user();
-        // $weekLogs = $this->getTimeLogs($user, 'week');
-        // $monthLogs = $this->getTimeLogs($user, 'month');
-        // $allLogs = $user->timeLogs()->orderByDesc('start_time')->get();
-
-        // return view('timelogs.index', [
-        //     'weekLogs' => $weekLogs,
-        //     'monthLogs' => $monthLogs,
-        //     'allLogs' => $allLogs,
-        // ]);
-
+    
       // Get the authenticated user's time logs, ordered by start time in descending order
-        $timelogs = auth()->user()->timelogs()->orderBy('start_time', 'desc')->paginate(10);
+
+        //$timelogs = auth()->user()->timelogs()->orderBy('start_time', 'desc')->paginate(10);
+        $timelogs = TimeLog::with('task.project')->orderBy('created_at', 'desc')->get();
 
         // Return the timelogs index view with the timelogs data
         return view('timelogs.index', compact('timelogs'));
@@ -41,7 +32,7 @@ class TimeLogController extends Controller
     {
         //
         $projects = Project::all();
-         return view('timelogs.create', compact('projects'));
+        return view('timelogs.create', compact('projects'));
     }
 
     /**
@@ -77,9 +68,11 @@ class TimeLogController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show($id)
     {
         //
+        $project = Project::findOrFail($id);
+        return view('projects.show', compact('project'));
     }
 
     /**
@@ -96,7 +89,7 @@ class TimeLogController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
         //
         $timelog = TimeLog::findOrFail($id);
@@ -110,18 +103,37 @@ class TimeLogController extends Controller
         $timelog->end_time = $validatedData['end_time'];
         $timelog->save();
 
-        return redirect()->route('timelogs.index')->with('success', 'Time log updated successfully.');
+
+         $notification = array(
+                'message' => 'Time log updated successfully',
+                'alert-type' => 'success'
+            );
+
+            
+        // Redirect to the timelogs index page with a success message
+        return redirect()->route('timelogs.index')->with($notification);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        //
+        
+        $timelog = Timelog::findOrFail($id);
+        $timelog->delete();
+
+        $notification = array(
+                'message' => 'Timelog deleted successfully!',
+                'alert-type' => 'success'
+            );
+
+            
+        // Redirect to the timelogs index page with a success message
+        return redirect()->back()->with($notification);
     }
 
-      private function getTimeLogs($user, $period)
+    private function getTimeLogs($user, $period)
     {
         $start = Carbon::now()->startOfWeek();
         if ($period === 'month') {
