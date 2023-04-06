@@ -6,7 +6,21 @@
 <div class="container">
     <div class="card mb-3">
         <div class="card-header">
-            <h3>Add Task for {{ $project->name }}</h3>
+
+        <div class="col-md-6">
+                <select id="project_id" class="form-control @error('project_id') is-invalid @enderror" name="project_id" required>
+                    <option value="">-- Select Project --</option>
+                    @foreach($projects as $project)
+                    <option value="{{ $project->id }}" {{ old('project_id') == $project->id ? 'selected' : '' }}>{{ $project->name }}</option>
+                    @endforeach
+                </select>
+
+                @error('project_id')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
+            </div>
         </div>
         <div class="card-body">
             <form action="{{ route('projects.tasks.store', $project) }}" method="POST">
@@ -25,20 +39,10 @@
                     <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
-                <div class="form-group">
-                    <label for="start_time">Start Time</label>
-                    <input type="datetime-local" class="form-control @error('start_time') is-invalid @enderror" id="start_time" name="start_time" value="{{ old('start_time') }}">
-                    @error('start_time')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
-                </div>
-                <div class="form-group">
-                    <label for="end_time">End Time</label>
-                    <input type="datetime-local" class="form-control @error('end_time') is-invalid @enderror" id="end_time" name="end_time" value="{{ old('end_time') }}">
-                    @error('end_time')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
-                </div>
+             <div class="form-group">
+                <label for="due_date">Due Date</label>
+                <input type="date" class="form-control" name="due_date" id="due_date">
+            </div>
                 <button type="submit" class="btn btn-primary">Add Task</button>
             </form>
         </div>

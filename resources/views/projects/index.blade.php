@@ -26,8 +26,8 @@
                         <td>{{ $project->description }}</td>
                            <td>
                             <div class="d-flex">
-                                <a href="#" class="btn btn-success mr-2">View</a>
-                                <a href="{{ route('project.edit', $project->id) }}" class="btn btn-primary mr-2">Edit</a>
+                                <a href="#" class="btn btn-success">View</a>
+                                <a href="{{ route('project.edit', $project->id) }}" class="btn btn-primary">Edit</a>
                                 <form action="{{ route('project.delete', $project->id) }}" method="POST">
                                     @csrf
                                     @method('DELETE')

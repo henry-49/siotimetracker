@@ -13,7 +13,7 @@
                     <form method="POST" action="{{ route('timelog.store') }}">
                         @csrf
 
-                        <div class="form-group row">
+                        <div class="form-group row mb-2">
                             <label for="project_id" class="col-md-4 col-form-label text-md-right">{{ __('Project') }}</label>
 
                             <div class="col-md-6">
@@ -32,7 +32,26 @@
                             </div>
                         </div>
 
-                        <div class="form-group row">
+                          <div class="form-group row mb-2">
+                            <label for="project_id" class="col-md-4 col-form-label text-md-right">{{ __('Task') }}</label>
+
+                            <div class="col-md-6">
+                                <select id="task_id" class="form-control @error('task_id') is-invalid @enderror" name="project_id" required>
+                                    <option value="project->tasks->id">-- Select Task --</option>
+                                    @foreach($project->tasks as $task)
+                                    <option value="{{ $task->id }}" {{ old('task->id') == $task->id ? 'selected' : '' }}>{{ task->id }}</option>
+                                    @endforeach
+                                </select>
+
+                                @error('task_id')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="form-group row mb-2">
                             <label for="start_time" class="col-md-4 col-form-label text-md-right">{{ __('Start Time') }}</label>
 
                             <div class="col-md-6">
@@ -46,7 +65,7 @@
                             </div>
                         </div>
 
-                        <div class="form-group row">
+                        <div class="form-group row mb-2">
                             <label for="end_time" class="col-md-4 col-form-label text-md-right">{{ __('End Time') }}</label>
 
                             <div class="col-md-6">

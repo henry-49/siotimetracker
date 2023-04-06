@@ -62,7 +62,7 @@ Route::middleware('auth')->group(function () {
     Route::put('/timelogs/{timelog}', [TimeLogController::class, 'update'])->name('timelog.update');
 
     // Route to handle deleting a specific time log
-    Route::delete('/timelogs/{timelog}', [TimeLogController::class, 'delete'])->name('timelog.destroy');
+    Route::delete('/timelogs/delete/{id}', [TimeLogController::class, 'destroy'])->name('timelog.delete');
 
 
     // Project All Routes
@@ -81,7 +81,7 @@ Route::delete('/project/delete/{id}', 'destroy')->name('project.delete');
 Route::controller(TaskController::class)->group(function () {
 Route::get('/tasks',  'index')->name('task.index');
 Route::get('/tasks/create',  'create')->name('task.create');
-Route::post('/tasks',  'store')->name('task.store');
+Route::post('/tasks',  'store')->name('projects.tasks.store');
 Route::get('/tasks/{id}',  'show')->name('task.show');
 Route::get('/tasks/{id}/edit',  'edit')->name('task.edit');
 Route::put('/tasks/{id}',  'update')->name('task.update');

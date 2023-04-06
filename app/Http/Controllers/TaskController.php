@@ -14,6 +14,7 @@ class TaskController extends Controller
     public function index()
     {
         //
+        $project = Project::all();
         $tasks = $project->tasks;
         return view('tasks.index', compact('project', 'tasks'));
     }
@@ -21,11 +22,11 @@ class TaskController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Project $project)
     {
         //
-        $project = Project::all();
-        return view('projects.tasks.create', compact('project'));
+        $projects = Project::all();
+        return view('projects.tasks.create', compact('projects'));
     }
 
     /**
@@ -33,17 +34,33 @@ class TaskController extends Controller
      */
     public function store(Request $request)
     {
-        //
-        $validated = $request->validate([
-            'name' => 'required|string',
-            'description' => 'nullable|string',
-            'start_time' => 'nullable|date',
-            'end_time' => 'nullable|date|after:start_time',
+           // Validate the form data
+        $validatedData = $request->validate([
+            'name' => 'required',
+            'description' => 'nullable',
+            'hours' => 'required|numeric|min:1'
         ]);
 
-        $task = new Task($validated);
-        $task->project()->associate($project);
+        // Create a new task with the submitted data
+            $task = new Task([
+                'name' => $validatedData['name'],
+                'description' => $validatedData['description'],
+                'hours' => $validatedData['hours'],
+            ]);
+
+        // Get all tasks for a project
+        $project = Project::find(1);
+        $tasks = $project->tasks;
+    
+        // Associate the task with the appropriate project
+       // $project = Project::find($request->project_id);
+       // $task->project()->associate($project);
+
+        // Save the task to the database
         $task->save();
+
+        // Redirect the user to the task's details page
+        //return redirect()->route('task.show', $task->id);
 
         return redirect()->route('projects.tasks.index', $project);
     }

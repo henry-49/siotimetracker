@@ -109,10 +109,6 @@ class ProjectController extends Controller
 
         // Redirect to the project's show page with a success message
             return redirect()->route('projects.index')->with($notification);
-
-    
-    
-
     }
 
     /**
@@ -120,7 +116,7 @@ class ProjectController extends Controller
      */
     public function destroy($id)
     {
-         $project = Project::findOrFail($id);
+        $project = Project::findOrFail($id);
         $project->delete();
 
         $notification = array(
